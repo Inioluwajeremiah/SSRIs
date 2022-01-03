@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <title>QSAR SSRIs</title>
+</head>
+<body>
+    <header id="header">
+        <a href="#" class="logo"><span>ORION</span> LAB</a>
+        <div class="menuToggle" onclick="toggleMenu()">
+        </div>   
+
+        <ul class="navigation">
+            <!-- <li><a href="#banner" onclick="toggleMenu()">Home</a></li> -->
+            <!-- <li><a href="#testimonials" onclick="toggleMenu()">Directors</a></li> -->
+            <li><a href="#about" onclick="toggleMenu()">About</a></li>
+            <li><a href="#md-predict" onclick="toggleMenu()">SSRIs</a></li>
+            <!-- <li><a href="#contact" id="myContact" onclick="showDialog()">Contact</a></li> -->
+        </ul>
+    </header>
+
+
+    <div class="container">
+
+        <div class="sidebar">
+            <form  action="/" method="POST" class="contactForm" id="contact-form" enctype=multipart/form-data>
+                <!-- stage one -->
+                <!-- <p class="stage-text">1</p>  -->
+                <!-- <p class="stage-text">2</p> -->
+                
+                <div class="inputBox">
+                    <input type="text" name="chem_id" placeholder="Input 'target_chembl_id' " id="input-chem_id" />
+                    <input type="submit" value="Search" name="search" />
+                </div>
+
+                <p >NB. Only csv, xls, xlsx formats are supported </p>
+                {% with messages = get_flashed_messages() %} {% if messages %} {% for
+                    message in messages %} <p class="flash-messages"> {{message}} </p> {% endfor %} {% endif %} {% endwith
+                    %}
+                <div class="inputBox">
+                    <input type=file name=file>
+                    <input type="submit" value="Upload" name="upload_file" id="uploadbtn">
+                </div>
+                <div class="inputBox">
+                    <input id="predict-btn" type="submit" value="Predict" name="predict" />
+                </div>
+                <div class="inputBox">
+                    <a href="/download-files/predicted_outcome.csv" target="blank" >
+                        <button class="btn" >Download result</button>
+                    </a>
+                    <!-- ame="download" type="submit" value = "Download file" -->
+        
+                </div>
+                
+                <!-- <div class="select-box">
+                    <select name="select_target" id="select-descr">
+                      <option selected disabled value="">Selet target</option>
+                      <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option>
+                      <option value="5">5</option> <option value="6">6</option> <option value="7">7</option> <option value="8">8</option>
+                      <option value="1">9</option> <option value="2">10</option> <option value="11">11</option> <option value="12">12</option>
+                      <option value="1">13</option> <option value="2">14</option> <option value="15">15</option> <option value="16">16</option>
+                      <option value="1">17</option> <option value="2">18</option> <option value="19">19</option> <option value="20">20</option>
+                      <option value="1">21</option> <option value="2">22</option> <option value="23">23</option> <option value="24">24</option>
+                      <option value="1">25</option> <option value="2">26</option> <option value="27">27</option> <option value="28">28</option>
+                      <option value="1">29</option> <option value="2">30</option> <option value="31">31</option> <option value="32">32</option>
+                      <option value="1">33</option> <option value="2">34</option> <option value="35">35</option> <option value="36">36</option>
+                      <option value="1">37</option> <option value="2">38</option> <option value="39">39</option> <option value="40">40</option>
+                      <option value="1">41</option> <option value="2">42</option> <option value="43">43</option> <option value="44">44</option>
+                      <option value="1">45</option> <option value="2">46</option> <option value="47">47</option> <option value="48">48</option>
+                      <option value="1">49</option> <option value="2">50</option> <option value="51">51</option> <option value="52">52</option>
+                    </select>
+                </div> -->
+
+                <!-- <div class="inputBox">
+                    <input type="text" name="canonical_smiles" placeholder="Input Canonical smile" id="input-canonical_smilesemail">
+                </div> -->
+                
+                <!-- <div class="select-box">
+                    <select name="select-descriptor" id="select-descr">
+                      <option selected disabled value="">Selet descriptor</option>
+                      <option value="chymol">Chymol</option>
+                      <option value="padel">Padel</option>
+                    </select>
+                </div>
+
+                <div class="select-box">
+                    <select name="select-padel-type" id="padel-type">
+                      <option selected disabled value="">Select Padel desc. type </option>
+                      <option value="AtomPairs2DFingerprintCount">AtomPairs2DFingerprintCount</option>
+                      <option value="AtomPairs2DFingerprinter">AtomPairs2DFingerprinter</option>
+                      <option value="EStateFingerprinter">EStateFingerprinter</option>
+                      <option value="ExtendedFingerprinter">ExtendedFingerprinter</option>
+                      <option value="Fingerprinter">Fingerprinter</option>
+                      <option value="GraphOnlyFingerprinter">GraphOnlyFingerprinter</option>
+                      <option value="KlekotaRothFingerprintCount">KlekotaRothFingerprintCount</option>
+                      <option value="KlekotaRothFingerprinter">KlekotaRothFingerprinter</option>
+                      <option value="MACCSFingerprinter">MACCSFingerprinter</option>
+                      <option value="PubchemFingerprinter">PubchemFingerprinter</option>
+                      <option value="SubstructureFingerprintCount">SubstructureFingerprintCount</option>
+                      <option value="SubstructureFingerprinter">SubstructureFingerprintert</option>
+                    </select>
+                </div>
+                                           -->
+            </form> 
+
+        </div>
+
+        <div class="main-container">
+            <p class="title">QSAR MODEL TO  PREDICT THE BIOACTIVITY OF SELECTIVE SEROTONIN INHIBITORS</p>
+
+                <section id="about">
+                    {% block bodyone %}
+                    <div class="stagediv"> 
+                        <p class="sub-title">IC50 Standard Type Based on the Inhibitor/Molecule Id</p>  <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ squery | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ squery_tail | safe }} <br>
+                        {{ squery_shape }}
+                    </div>
+    
+                    <div class="stagediv"> 
+                        <p class="sub-title">IC50 Standard Type Based of the Inhibitor/Molecule Id</p>  <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ starget | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ starget_tail | safe }} <br>
+                        {{ starget_shape }}
+                    </div>
+    
+                    <div class="stagediv">
+                        <p class="sub-title">Bioactivity of Serotonin Inhibitors against Selected Target</p>  <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ starget | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ starget_tail | safe }} <br>
+                        {{  starget_shape }}
+                    </div>
+    
+                    <div class="stagediv">
+                        <p class="sub-title">Bioactivity of Serotonin against Targets</p>  <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ pone | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ pone_tail | safe }} <br>
+                        {{ pone_shape }}
+                    </div>
+    
+                    <div class="stagediv">
+                        <p class="sub-title">Lipinski Descriptor to Predict the ADME/T Property of the Selected Molecule</p>  <br>
+                        <b>Christopher Lpinski descriptor </b> is used to predict the ADME Pharmokinetic properties of molecules or the druglikeness of molecules. The lipinski rule can be used to determine the following chemical properties:
+                        <li> Molecular weight < 500 Dalton </li>
+                        <li> Octanol-water partition coefficient (LogP) < 5 </li>
+                        <li> Hydrogen bond donors < 5 </li>
+                        <li> Hydrogen bond acceptors < 10 </li>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ ptwo | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ ptwo_tail | safe }} <br>
+                        {{  ptwo_shape }}
+                    </div>
+                    {% endblock %}
+                    
+                </section>
+                    {% block bodytwo %}
+                <section id="md-predict">
+                    <p class="model-title">MODEL PREDICTION</p>
+                    <div class="stagediv">
+                        <p class="sub-title">Display 'canonical_smiles' and 'mol_cid'</p>  <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ df_selection | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ df_selection_tail | safe }} <br>
+                        {{ df_selectionShape }}
+                    </div>              
+                
+                    <div class="stagediv7">
+                        <p class="sub-title">QSAR of Structure (descriptor x) to Predict Molecular Inhibitory Activity (pIC50 y)</p> <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ dfCombined | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ dfCombined_tail | safe }} <br>
+                        {{ dfCombinedshape }} 
+                        
+                    </div>
+
+                    <div class="stagediv">
+                        <p class="sub-title">Display 'descriptors_output.csv' </p>  <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ df_descriptor | safe }}  <br><br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ df_descriptor_tail | safe }} <br>
+                        {{df_des_shape}}
+                    </div>
+
+                    <div class="stagediv">
+                        <p class="sub-title">Descriptors Representing Canonical Smiles and Molecule IdEach Molecule</p> <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ df_descriptor_x | safe }} <br><br>
+                        <p class="nrows">{{ nlrows }}</p> 
+                        {{ df_descriptor_x_tail | safe }}
+                        {{ df_descriptor_xshape }}  <br>
+                    </div>
+
+                    <div class="stagediv">
+                        <p class="sub-title">Predicted Value</p> <br>
+                        <p class="nrows">{{ nlrows }}</p>
+                        {{ dof | safe }}  <br> <br>
+                        <p class="nrows">{{ nfrows }}</p>
+                        {{ dof_tail | safe }} <br>
+                        {{ dofshape }}
+                    </div>           
+
+                </section>
+                
+            {% endblock %}
+            
+        
+
+        </div>
+        
+    </div>
+   
+
+<footer>
+    <div class="column1">
+        <p>Developed by EphphathaGC (2021)</p>
+        <!-- <p>2021</p> -->
+        <!-- &copy; -->
+        <p>ephphathagc44@gmail.com</p>
+    </div>
+    <div class="column2">
+        <p> <i>Inspired by</i></p>
+        <a href="https://github.com/dataprofessor"> Chanin Nantasenamat (dataprofessor)</a>
+    </div>
+   
+</footer>
+    
+</body> 
+<script src="../static/js/index.js"></script>
+</html>
