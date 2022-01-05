@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/index.css" />
+    <title>QSAR SSRIs</title>
+  </head>
+  <body>
+    <header id="header">
+      <a href="#" class="logo"><span>ORION</span> LAB</a>
+      <div class="menuToggle" onclick="toggleMenu()"></div>
+
+      <ul class="navigation">
+        <!-- <li><a href="#banner" onclick="toggleMenu()">Home</a></li> -->
+        <!-- <li><a href="#testimonials" onclick="toggleMenu()">Directors</a></li> -->
+        <li><a href="\" onclick="toggleMenu()">About</a></li>
+        <li>
+          <a href="#md-predict" onclick="toggleMenu()" class="active">SSRIs</a>
+        </li>
+        <!-- <li><a href="#contact" id="myContact" onclick="showDialog()">Contact</a></li> -->
+      </ul>
+    </header>
+
+    <div class="container">
+      <div class="main-container">
+        <p class="title">
+          QSAR MODEL TO PREDICT THE BIOACTIVITY OF SELECTIVE SEROTONIN
+          INHIBITORS
+        </p>
+
+        <p class="model-title">MODEL PREDICTION</p>
+
+        {% block bodytwo %}
+        <section id="md-predict">
+          <div class="stagediv">
+            <p class="sub-title">Display 'canonical_smiles' and 'mol_cid'</p>
+            <br />
+            <p class="nrows">{{ nfrows }}</p>
+            {{ df_selection | safe }} <br /><br />
+            <p class="nrows">{{ nlrows }}</p>
+            {{ df_selection_tail | safe }} <br />
+            {{ df_selectionShape }}
+          </div>
+
+          <div class="stagediv">
+            <p class="sub-title">
+              QSAR of Structure (descriptor x) to Predict Molecular Inhibitory
+              Activity (pIC50 y)
+            </p>
+            <br />
+            <p class="nrows">{{ nfrows }}</p>
+            {{ dfCombined | safe }} <br /><br />
+            <p class="nrows">{{ nlrows }}</p>
+            {{ dfCombined_tail | safe }} <br />
+            {{ dfCombinedshape }}
+          </div>
+
+          <div class="stagediv">
+            <p class="sub-title">Display 'descriptors_output.csv'</p>
+            <br />
+            <p class="nrows">{{ nfrows }}</p>
+            {{ df_descriptor | safe }} <br /><br />
+            <p class="nrows">{{ nlrows }}</p>
+            {{ df_descriptor_tail | safe }} <br />
+            {{df_des_shape}}
+          </div>
+
+          <div class="stagediv">
+            <p class="sub-title">
+              Descriptors Representing Canonical Smiles and Molecule Id
+            </p>
+            <br />
+            <p class="nrows">{{ nfrows }}</p>
+            {{ df_descriptor_x | safe }} <br /><br />
+            <p class="nrows">{{ nlrows }}</p>
+            {{ df_descriptor_x_tail | safe }} {{ df_descriptor_xshape }} <br />
+          </div>
+
+          <div class="stagediv">
+            <p class="sub-title">Predicted Result</p>
+            <br />
+            <p class="nrows">{{ nfrows }}</p>
+            {{ dof | safe }} <br />
+            <br />
+            <p class="nrows">{{ nlrows }}</p>
+            {{ dof_tail | safe }} <br />
+            {{ dofshape }}
+          </div>
+        </section>
+
+        {% endblock %}
+      </div>
+    </div>
+
+    <footer>
+      <div class="column1">
+        <p>Developed by EphphathaGC (2021)</p>
+        <!-- <p>2021</p> -->
+        <!-- &copy; -->
+        <p>ephphathagc44@gmail.com</p>
+      </div>
+      <div class="column2">
+        <p><i>Inspired by</i></p>
+        <a href="https://github.com/dataprofessor">
+          Chanin Nantasenamat (dataprofessor)</a
+        >
+      </div>
+    </footer>
+  </body>
+  <script src="../static/js/index.js"></script>
+</html>
