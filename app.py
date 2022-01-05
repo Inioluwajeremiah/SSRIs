@@ -11,6 +11,8 @@ import ssri as ss
 import eda_activity as eda_a
 import pandas as pd
 
+from pyfladesk import init_gui
+
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'csv', 'xls', 'xlsx'}
 
@@ -81,11 +83,11 @@ def searchTarget():
             df = pd.read_csv('ssri_bioactivity.csv')
             selection = ['canonical_smiles', 'mol_cid']
             df_selection = df[selection]
-            # df_selection.to_csv('df_selection.csv')
+            df_selection.to_csv('df_selection.csv')
             df_selection.to_csv('molecule.smi', sep='\t',
                                 index=False, header=False)
 
-            def desCalc():
+            def desc_calc():
                 # Performs the descriptor calculation
                 bashCommand = "java -Xms2G -Xmx2G -Djava.awt.headless=true -jar ./PaDEL-Descriptor/PaDEL-Descriptor.jar -removesalt -standardizenitro -fingerprints -descriptortypes ./PaDEL-Descriptor/PubchemFingerprinter.xml -dir ./ -file descriptors_output.csv"
                 process = subprocess.Popen(
@@ -94,7 +96,7 @@ def searchTarget():
                 os.remove('molecule.smi')
 
             # Molecular descriptor calculator
-            desCalc()
+            # desc_calc()
 
             #   read descriptor out put produced by PADEL descriptor
             df_descriptor = pd.read_csv('descriptors_output.csv')
@@ -121,7 +123,7 @@ def searchTarget():
                 df_descriptor_x, threshold=(.8 * (1 - .8)))
             Xaxis = pd.DataFrame(Xvariance)
 
-            # Xaxis.to_csv('descriptors_list.csv', index=False)
+            Xaxis.to_csv('descriptors_list.csv', index=False)
             flash('descriptors_list.csv saved to local storage')
 
             # finishedXaxis = Xaxis.fit_transform(df_descriptor)
@@ -143,12 +145,12 @@ def searchTarget():
 
                 predictedVariables = pd.concat(
                     [read_selection, prediction_output], axis=1)
-                os.remove('predicted_outcome.csv')
-                predictedVariables.to_csv("predicted outcome.csv")
+                # os.remove('predicted_outcome.csv')
+                predictedVariables.to_csv("predicted_outcome.csv")
                 return predictedVariables
 
             dof = build_model(finishedXaxis)
-            return render_template("index.html", nfrows=nfrows, nlrows=nlrows, df=df.head(10).to_html(classes="table table-striped"), dfshape=df.shape, df_tail=df.tail(10).to_html(classes="table table-striped"),
+            return render_template("ssri.html", nfrows=nfrows, nlrows=nlrows, df=df.head(10).to_html(classes="table table-striped"), dfshape=df.shape, df_tail=df.tail(10).to_html(classes="table table-striped"),
                                    df_descriptor_x=df_descriptor_x.head(10).to_html(classes="table table-striped"), df_descriptor_x_tail=df_descriptor_x.tail(10).to_html(classes="table table-striped"), df_descriptor_xshape=df_descriptor_x.shape,
                                    df_selection=df_selection.head(10).to_html(classes="table table-striped"), df_selection_tail=df_selection.tail(10).to_html(classes="table table-striped"), df_selectionShape=df_selection.shape,
                                    df_descriptor=df_descriptor.head(10).to_html(classes="table table-striped"), df_descriptor_tail=df_descriptor.tail(10).to_html(classes="table table-striped"), df_des_shape=df_descriptor.shape,
@@ -166,5 +168,11 @@ def return_files_tut():
     return send_file(file_path, as_attachment=True, attachment_filename='')
 
 
+@app.route('/ssri')
+def ssriHTML():
+    return render_template('ssri.html')
+
+
 if __name__ == '__main__':
-    app.run()
+    init_gui(app, window_title="SSRI MODEL")
+    # app.run(port="200", debug=True)
